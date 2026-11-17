@@ -50,7 +50,7 @@ export const DEFAULT_WORKSPACE: Workspace = {
 
 type PresetDefinition = { colors: Record<ColorKey, string> };
 
-/** The "concept" preset is the colour scheme of UI-Concept.figcraft. Keep it in sync with settings.rs. */
+/** Keep the default palette in sync with settings.rs. */
 export const PRESETS: Record<Exclude<Preset, "custom">, PresetDefinition> = {
   concept: {
     colors: {

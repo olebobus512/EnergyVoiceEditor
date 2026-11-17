@@ -1,5 +1,5 @@
 // Per-track colours. Each track stores its own colour in the project file; there is no global track colour setting.
-// The first three entries match the colours of UI-Concept.figcraft, so new projects look like the concept by default.
+// Default colours for new tracks.
 
 export const TRACK_PALETTE = [
   "#ff5c7a", // Track 1 Coral
