@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://suharikstudios.example/evbank/manifest-1.schema.json",
+  "title": "Energy Voice Bank manifest (formatVersion 1)",
+  "description": "Describes manifest.json of an .evbank. Rules that compare several fields (the keys of 'checksums' must equal 'files'; no two paths may differ only by letter case; 'icon' and 'preview' must be listed in 'files') cannot be expressed in JSON Schema and are enforced by the loader (src-tauri/src/evbank/manifest.rs).",
+  "type": "object",
+  "required": [
+    "format",
+    "formatVersion",
+    "voiceId",
+    "voiceName",
+    "author",
+    "description",
+    "languages",
+    "synthesisTypes",
+    "supportedBackends",
+    "phonemizers",
+    "audioConfiguration",
+    "pitchRange",
+    "license",
+    "files",
+    "checksums"
+  ],
+  "properties": {
+    "format": {
+      "const": "evbank"
+    },
+    "formatVersion": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1,
+      "description": "Highest version this build understands. A larger value is reported as 'unsupported version'."
+    },
+    "voiceId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$",
+      "not": {
+        "pattern": "\\.\\."
+      }
+    },
+    "voiceName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "version": {
+      "type": "string",
+      "description": "Optional. Dotted numbers such as 1.2.0. Missing means 0.0.0."
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "languages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+      }
+    },
+    "synthesisTypes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "sample",
+          "neural",
+          "speech",
+          "singing"
+        ]
+      }
+    },
+    "supportedBackends": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "phonemizers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "audioConfiguration": {
+      "type": "object",
+      "required": [
+        "sampleRate",
+        "channels",
+        "bitDepth"
+      ],
+      "properties": {
+        "sampleRate": {
+          "type": "integer",
+          "minimum": 8000,
+          "maximum": 192000
+        },
+        "channels": {
+          "enum": [
+            1,
+            2
+          ]
+        },
+        "bitDepth": {
+          "enum": [
+            16,
+            24,
+            32
+          ]
+        }
+      }
+    },
+    "pitchRange": {
+      "type": "object",
+      "required": [
+        "minMidi",
+        "maxMidi"
+      ],
+      "properties": {
+        "minMidi": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 127
+        },
+        "maxMidi": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 127
+        }
+      },
+      "description": "minMidi must be lower than maxMidi (checked by the loader)."
+    },
+    "license": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string"
+        },
+        "commercialUse": {
+          "type": "boolean"
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 240,
+        "not": {
+          "enum": [
+            "manifest.json"
+          ]
+        }
+      },
+      "description": "Every file of the bank except manifest.json, as relative paths with '/'. A file in the archive that is not listed here rejects the bank."
+    },
+    "checksums": {
+      "type": "object",
+      "propertyNames": {
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "description": "Lowercase SHA-256 of every listed file."
+    },
+    "icon": {
+      "type": "string"
+    },
+    "preview": {
+      "type": "string"
+    },
+    "supportedExpressions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "modelRequirements": {
+      "type": "object"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "voiceId"
+        ],
+        "properties": {
+          "voiceId": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"
+          },
+          "minVersion": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "voiceVariants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

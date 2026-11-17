@@ -1,0 +1,17 @@
+{
+  "id": "soft-bell",
+  "name": "Soft Bell",
+  "version": 1,
+  "harmonics": [
+    1,
+    0.15,
+    0.5,
+    0,
+    0.2,
+    0,
+    0.1
+  ],
+  "attack": 0.005,
+  "release": 0.2,
+  "decay": 2.5
+}

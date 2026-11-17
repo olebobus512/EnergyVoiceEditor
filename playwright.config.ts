@@ -1,0 +1,2 @@
+import { defineConfig } from "@playwright/test";
+export default defineConfig({ testDir: "./tests", use: { baseURL: "http://localhost:1420", viewport: { width: 1600, height: 900 }, launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" } }, webServer: { command: "npm run dev", url: "http://localhost:1420", reuseExistingServer: true } });
